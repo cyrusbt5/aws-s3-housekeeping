@@ -5,3 +5,7 @@ Helper scripts for housekeeping AWS S3
 
 - [S3cmd](http://s3tools.org)
 - [S3cmd usage](http://s3tools.org/usage)
+
+## Files
+
+- aws-s3-clean.sh (only works on Mac at the moment)
