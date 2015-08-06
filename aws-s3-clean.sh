@@ -34,11 +34,20 @@ display_bucket_size() {
   echo "AWS S3 bucket size $(${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }')"
 }
 
+function create_timestamp() {
+  case "$OSTYPE" in
+    darwin*)  timestamp=$(date -j -f "%Y-%m-%d" "$(echo $1 | awk {'print $1'})" '+%s') ;;
+    linux*)   timestamp=$(date -d"$(echo $1 | awk {'print $1'})" '+%s') ;;
+  esac
+}
+
 olderThan=$(date -v"-${days}d" '+%s')
 
 ${s3cmd} ls -r s3://${bucket} | grep -Ev "logs/" | while read -r line; do
-  # timestamp=$(date -d"$(echo $line | awk {'print $1'})" '+%s')
-  timestamp=$(date -j -f "%Y-%m-%d" "$(echo $line | awk {'print $1'})" '+%s')
+  
+  create_timestamp $line
+  timestamp=${timestamp}
+  
   if [[ $timestamp -lt $olderThan ]]; then
     fileName=$(echo $line | awk {'print $5'})
     if [[ $fileName != "" ]]; then
