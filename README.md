@@ -8,4 +8,6 @@ Helper scripts for housekeeping AWS S3
 
 ## Files
 
-- aws-s3-clean.sh (only works on Mac at the moment)
+- aws-s3-clean.sh 
+  - (create_timestamp() now works for Darwin and Linux)
+  - variable olderThan only works on Macs currently
