@@ -14,7 +14,7 @@ bucket=${1:-}
 days=${2:-}
 
 # set s3cmd command
-s3cmd=$(which s3cmd)
+s3cmd=$(command -v s3cmd)
 
 display_usage() {
   echo -e "\nUsage:\n$0 [bucket] [days]\n"
