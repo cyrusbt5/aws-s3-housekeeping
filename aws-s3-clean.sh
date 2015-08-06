@@ -34,6 +34,8 @@ if [[ $# == "--help" || $# == "-h" ]]; then
   exit 0
 fi
 
+olderThan=$(date -v"-${days}d" '+%s')
+
 ${s3cmd} ls -r s3://${bucket} | grep -Ev "logs/" | while read -r line; do
   # timestamp=$(date -d"$(echo $line | awk {'print $1'})" '+%s')
   timestamp=$(date -j -f "%Y-%m-%d" "$(echo $line | awk {'print $1'})" '+%s')
