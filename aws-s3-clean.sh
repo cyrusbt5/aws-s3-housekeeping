@@ -16,7 +16,7 @@ days=${2:-}
 # set s3cmd command
 s3cmd=$(command -v s3cmd)
 
-display_usage() {
+function display_usage() {
   echo -e "\nUsage:\n$0 [bucket] [days]\n"
 }
 
@@ -30,7 +30,7 @@ if [[ $# == "--help" || $# == "-h" ]]; then
   exit 0
 fi
 
-display_bucket_size() {
+function display_bucket_size() {
   echo "AWS S3 bucket size $(${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }')"
 }
 
