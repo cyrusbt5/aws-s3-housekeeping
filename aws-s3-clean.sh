@@ -20,10 +20,6 @@ display_usage() {
   echo -e "\nUsage:\n$0 [bucket] [days]\n"
 }
 
-display_bucket_size() {
-  echo "AWS S3 bucket size $(${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }')"
-}
-
 if [[ $# -le 1 ]]; then
   display_usage
   exit 1
@@ -33,6 +29,10 @@ if [[ $# == "--help" || $# == "-h" ]]; then
   display_usage
   exit 0
 fi
+
+display_bucket_size() {
+  echo "AWS S3 bucket size $(${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }')"
+}
 
 olderThan=$(date -v"-${days}d" '+%s')
 
