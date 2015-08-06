@@ -20,6 +20,10 @@ display_usage() {
   echo -e "\nUsage:\n$0 [bucket] [days]\n"
 }
 
+display_bucket_size() {
+  echo "AWS S3 bucket size $(${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }')"
+}
+
 if [[ $# -le 1 ]]; then
   display_usage
   exit 1
@@ -29,9 +33,6 @@ if [[ $# == "--help" || $# == "-h" ]]; then
   display_usage
   exit 0
 fi
-
-echo "Size of AWS S3 bucket before purge."
-${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }'
 
 ${s3cmd} ls -r s3://${bucket} | grep -Ev "logs/" | while read -r line; do
   # timestamp=$(date -d"$(echo $line | awk {'print $1'})" '+%s')
@@ -43,6 +44,4 @@ ${s3cmd} ls -r s3://${bucket} | grep -Ev "logs/" | while read -r line; do
     fi
   fi
 done;
-
-echo "Size of AWS S3 bucket after purge."
-${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }'
+display_bucket_size
