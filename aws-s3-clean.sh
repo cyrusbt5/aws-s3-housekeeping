@@ -64,8 +64,7 @@ olderThan=$(create_timestamp)
 
 ${s3cmd} ls -r s3://${bucket} | grep -Ev "logs/" | while read -r line; do
   
-  create_timestamp $line
-  timestamp=${timestamp}
+timestamp=$(find_timestamp $line)
   
   if [[ $timestamp -lt $olderThan ]]; then
     fileName=$(echo $line | awk {'print $5'})
