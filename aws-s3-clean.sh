@@ -34,10 +34,16 @@ function display_bucket_size() {
   echo "AWS S3 bucket size $(${s3cmd} du -r s3://${bucket} | awk '{printf "%.0f MB\n", $1/1024/1024 }')"
 }
 
-function create_timestamp() {
+function find_timestamp() {
   case "$OSTYPE" in
-    darwin*)  timestamp=$(date -j -f "%Y-%m-%d" "$(echo $1 | awk {'print $1'})" '+%s') ;;
-    linux*)   timestamp=$(date -d"$(echo $1 | awk {'print $1'})" '+%s') ;;
+    darwin*)
+      timestamp=$(date -j -f "%Y-%m-%d" "$(echo $1 | awk {'print $1'})" '+%s');
+      echo $timestamp;
+    ;;
+    linux*)
+      timestamp=$(date -d"$(echo $1 | awk {'print $1'})" '+%s');
+      echo $timestamp;
+    ;;
   esac
 }
 
