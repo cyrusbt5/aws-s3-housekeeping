@@ -47,7 +47,20 @@ function find_timestamp() {
   esac
 }
 
-olderThan=$(date -v"-${days}d" '+%s')
+function create_timestamp() {
+  case "$OSTYPE" in
+    darwin*)
+      olderThan=$(date -v"-${days}d" '+%s');
+      echo $olderThan;
+    ;;
+    linux*)
+      olderThan=$(date -d "-${days} days" '+%s');
+      echo $olderThan;
+    ;;
+  esac
+}
+
+olderThan=$(create_timestamp)
 
 ${s3cmd} ls -r s3://${bucket} | grep -Ev "logs/" | while read -r line; do
   
