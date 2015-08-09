@@ -9,5 +9,8 @@ Helper scripts for housekeeping AWS S3
 ## Files
 
 - aws-s3-clean.sh 
-  - (create_timestamp() now works for Darwin and Linux)
-  - variable olderThan only works on Macs currently
+  - now works for Darwin and Linux
+- aws-s3-drupal-clear-cache.sh
+ - TODO
+- aws-s3-backup-db.sh
+ - TODO
