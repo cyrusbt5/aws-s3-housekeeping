@@ -24,7 +24,7 @@ function display_usage() {
 }
 
 function display_bucket_size() {
-  echo "AWS S3 bucket size $("${s3cmd}" du -r s3://"${bucket}" | awk '{printf "%.0f MB\n", $1/1024/1024 }')"
+  echo "AWS S3 bucket size $("${s3cmd}" du s3://"${bucket}" | awk '{ printf "%.0f MB\n", $1/1024/1024 }')"
 }
 
 if [[ "${bucket}" = "--help" || "${bucket}" = "-h" ]]; then
@@ -70,14 +70,14 @@ function create_timestamp() {
 
 olderThan=$(create_timestamp)
 
-"${s3cmd}" ls -r s3://"${bucket}" | grep -Ev "logs/" | while read -r line; do
+"${s3cmd}" ls -r s3://"${bucket}" | grep -Eiv "logs/" | while read -r line; do
 
  timestamp=$(find_timestamp "${line}")
 
-  if [[ "${timestamp}" -lt "${olderThan}" ]] ; then
+  if [[ "${timestamp}" -lt "${olderThan}" ]]; then
     fileName=$(echo "${line}" | awk {'print $5'})
-    if [[ "${fileName}" != "" ]]; then
-      "${s3cmd}" rm "${fileName}" > /dev/null 2>&1
+    if [[ -n "${fileName}" ]]; then
+      "${s3cmd}" rm "${fileName}" &> /dev/null
     fi
   fi
 done;
