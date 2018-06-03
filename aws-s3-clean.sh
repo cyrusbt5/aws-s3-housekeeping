@@ -18,9 +18,9 @@ days="${2:-}"
 s3cmd=$(command -v s3cmd)
 
 function display_usage() {
-  echo -e "\nUsage: clean bucket\n$0 [bucket name] [days]\n"
-  echo -e "Usage: get bucket size\n$0 [bucket name] -s|--size\n"
-  echo -e "Usage: print help\n$0 -h|--help\n"
+  echo -e "\\nUsage: clean bucket\\n$0 [bucket name] [days]\\n"
+  echo -e "Usage: get bucket size\\n$0 [bucket name] -s|--size\\n"
+  echo -e "Usage: print help\\n$0 -h|--help\\n"
 }
 
 function display_bucket_size() {
@@ -45,11 +45,11 @@ fi
 function find_timestamp() {
   case "$OSTYPE" in
     darwin*)
-      timestamp=$(date -j -f "%Y-%m-%d" "$(echo "${1}" | awk {'print $1'})" '+%s');
+      timestamp=$(date -j -f "%Y-%m-%d" "$(echo "${1}" | awk "{'print $1'}")" '+%s');
       echo "${timestamp}";
     ;;
     linux*)
-      timestamp=$(date -d"$(echo "${1}" | awk {'print $1'})" '+%s');
+      timestamp=$(date -d"$(echo "${1}" | awk "{'print $1'}")" '+%s');
       echo "${timestamp}";
     ;;
   esac
@@ -75,7 +75,7 @@ olderThan=$(create_timestamp)
  timestamp=$(find_timestamp "${line}")
 
   if [[ "${timestamp}" -lt "${olderThan}" ]]; then
-    fileName=$(echo "${line}" | awk {'print $5'})
+    fileName=$(echo "${line}" | awk "{'print $5'}")
     if [[ -n "${fileName}" ]]; then
       "${s3cmd}" rm "${fileName}" &> /dev/null
     fi
